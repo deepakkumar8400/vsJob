@@ -1,8 +1,7 @@
-import React from "react";
 import { Link } from "react-router-dom";
-import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover";
 import { Avatar, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 
 const Navbar = () => {
   const user = false; // User authentication status
@@ -24,7 +23,7 @@ const Navbar = () => {
             <Link to="/jobs">Jobs</Link>
           </li>
           <li>
-            <Link to="/about">About</Link>
+            <Link to="/browse">Browse</Link>
           </li>
         </ul>
 

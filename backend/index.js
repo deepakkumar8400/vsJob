@@ -23,7 +23,7 @@ const startServer = async () => {
         app.use(cookieParser());
 
         // ✅ CORS Configuration (Allow Multiple Frontend Origins)
-        const allowedOrigins = ["http://localhost:5175", "http://localhost:5174"];
+        const allowedOrigins = ["http://localhost:5173", "http://localhost:5174"];
 
         app.use(
             cors({

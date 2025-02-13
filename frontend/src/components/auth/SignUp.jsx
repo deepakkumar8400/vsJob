@@ -5,6 +5,8 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import axios from "axios";
 import USER_API_END_POINT from "/src/utils/constant.js";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading } from "../../redux/authSlice";
 
 function Signup() {
   const [input, setInput] = useState({
@@ -17,6 +19,8 @@ function Signup() {
   });
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const loading = useSelector((store) => store.auth.loading);
 
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -45,12 +49,12 @@ function Signup() {
     }
 
     try {
+      dispatch(setLoading(true));
       const res = await axios.post(`${USER_API_END_POINT}/register`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true,
       });
 
-      console.log("Server Response:", res.data); // Debugging
       if (res.data.success) {
         toast.success(res.data.message);
         navigate("/login");
@@ -58,8 +62,9 @@ function Signup() {
         toast.error(res.data.message);
       }
     } catch (error) {
-      console.error("Signup Error:", error.response?.data || error);
       toast.error(error.response?.data?.message || "Signup failed! Please try again.");
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 
@@ -111,7 +116,16 @@ function Signup() {
           <input accept="image/*" type="file" onChange={changeFileHandler} className="cursor-pointer" />
         </div>
 
-        <Button type="submit" className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg">Sign Up</Button>
+        {loading && (
+          <button disabled className="w-full flex items-center justify-center p-2 bg-gray-300 rounded-lg">
+            <span className='mr-2 h-4 w-4 animate-spin'>⏳</span>
+            Please Wait
+          </button>
+        )}
+
+        <Button type="submit" className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg" disabled={loading}>
+          {loading ? "Signing up..." : "Sign Up"}
+        </Button>
 
         <div className="mt-3 text-center">
           Already have an account? <a href="/login" className="text-blue-600 hover:underline">Login</a>
