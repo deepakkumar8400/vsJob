@@ -3,10 +3,8 @@ import { Bookmark } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { useNavigate } from "react-router-dom";
 import logo from "@/assets/download.jpg";
-
-<AvatarImage src={logo} alt="Company Logo" />
-
 
 const Job = ({ jobData = {} }) => {
   const {
@@ -18,6 +16,9 @@ const Job = ({ jobData = {} }) => {
     type = "",
     salary = "",
   } = jobData;
+
+  const navigate = useNavigate();
+  const jobId = "nkssksbks";
 
   return (
     <div className="p-5 border rounded-2xl shadow-lg bg-white w-full max-w-md mx-auto md:max-w-lg">
@@ -32,7 +33,7 @@ const Job = ({ jobData = {} }) => {
       {/* Company Logo and Details */}
       <div className="flex items-center gap-3">
         <Avatar className="w-10 h-10">
-          <AvatarImage src={logo} />
+          <AvatarImage src={logo} alt="Company Logo" />
         </Avatar>
         <div>
           <p className="font-bold text-gray-800">{companyName}</p>
@@ -68,7 +69,11 @@ const Job = ({ jobData = {} }) => {
 
         {/* Buttons */}
         <div className="mt-4 flex gap-3">
-          <Button variant="outline" className="w-1/2 border-gray-300">
+          <Button
+            onClick={() => navigate(`/descripation/${jobId}`)}
+            variant="outline"
+            className="w-1/2 border-gray-300"
+          >
             Details
           </Button>
           <Button variant="default" className="w-1/2 bg-purple-600 text-white">

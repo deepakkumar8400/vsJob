@@ -7,7 +7,7 @@ import axios from "axios";
 import USER_API_END_POINT from "/src/utils/constant.js";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoading } from "../../redux/authSlice"; 
+import { setLoading ,setUser} from "../../redux/authSlice"; 
 
 function Login() {
   const [input, setInput] = useState({ email: "", password: "", role: "student" });
@@ -27,10 +27,11 @@ function Login() {
     }
 
     try {
-      dispatch(setLoading(true)); // 🔥 Redux me loading set karna
+      dispatch(setLoading(true));
       const res = await axios.post(`${USER_API_END_POINT}/login`, input, { withCredentials: true });
 
       if (res.data.success) {
+        dispatch(setUser(res.data.user));
         toast.success(res.data.message);
         navigate("/");
       } else {

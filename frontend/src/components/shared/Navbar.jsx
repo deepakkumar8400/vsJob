@@ -2,9 +2,10 @@ import { Link } from "react-router-dom";
 import { Avatar, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { useSelector } from "react-redux";  // ✅ Corrected import
 
 const Navbar = () => {
-  const user = false; // User authentication status
+  const { user } = useSelector((store) => store.auth);  // ✅ Fixed useSelector spelling
 
   return (
     <div className="bg-white shadow">
@@ -64,7 +65,7 @@ const Navbar = () => {
                   </div>
                 </div>
                 <div className="mt-4 flex justify-between">
-                  <Button variant="link">View Profile</Button>
+                  <Button variant="link"><Link to='/profile'>View Profile</Link></Button>
                   <Button variant="link">Logout</Button>
                 </div>
               </PopoverContent>

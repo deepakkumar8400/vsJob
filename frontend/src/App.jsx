@@ -6,6 +6,8 @@ import Navbar from "./components/shared/Navbar";
 import Footer from "./components/Footer";
 import Jobs from'./components/jobs';
 import Browse from "./components/Browse";
+import Profile from "./components/Profile";
+import JobDescripation from "./components/JobDescripation";
 
 // ✅ Layout Component: Jo har page ke sath dikhega
 const Layout = () => {
@@ -29,6 +31,8 @@ const appRouter = createBrowserRouter([
       { path: "/login", element: <Login /> },
       { path: "/jobs", element: <Jobs /> },
       { path: "/browse", element: <Browse /> },
+      { path: "/profile", element: <Profile /> },
+      { path: "/descripation/:id", element: <JobDescripation /> },
     ],
   },
 ]);
