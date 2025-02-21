@@ -24,7 +24,7 @@ const Layout = () => {
 const appRouter = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />, 
+    element: <Layout />,
     children: [
       { path: "/", element: <Home /> },
       { path: "/signup", element: <SignUp /> },
@@ -32,11 +32,11 @@ const appRouter = createBrowserRouter([
       { path: "/jobs", element: <Jobs /> },
       { path: "/browse", element: <Browse /> },
       { path: "/profile", element: <Profile /> },
-      { path: "/descripation/:id", element: <JobDescripation /> },
+      { path: "/description/:jobId", element: <JobDescripation /> },
+      
     ],
   },
 ]);
-
 
 function App() {
   return <RouterProvider router={appRouter} />;

@@ -1,3 +1,4 @@
+// src/components/Job.js
 import React from "react";
 import { Bookmark } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -15,16 +16,17 @@ const Job = ({ jobData = {} }) => {
     position = "",
     type = "",
     salary = "",
+    daysAgo = "0", // Default value for days ago
   } = jobData;
 
   const navigate = useNavigate();
-  const jobId = "nkssksbks";
+  const jobId = jobData._id; // Use the job ID from the job data
 
   return (
     <div className="p-5 border rounded-2xl shadow-lg bg-white w-full max-w-md mx-auto md:max-w-lg">
       {/* Header Section */}
       <div className="flex justify-between items-center mb-3">
-        <p className="text-gray-500 text-sm">2 days ago</p>
+        <p className="text-gray-500 text-sm">{daysAgo} days ago</p>
         <Button variant="ghost" className="rounded-full p-2">
           <Bookmark className="w-5 h-5 text-gray-500" />
         </Button>
@@ -52,7 +54,7 @@ const Job = ({ jobData = {} }) => {
         <div className="flex flex-wrap gap-2 mt-3">
           {position && (
             <Badge className="bg-blue-100 text-blue-700 font-semibold px-3 py-1">
-              {position}
+              {position} Positions
             </Badge>
           )}
           {type && (
@@ -62,7 +64,7 @@ const Job = ({ jobData = {} }) => {
           )}
           {salary && (
             <Badge className="bg-purple-100 text-purple-700 font-semibold px-3 py-1">
-              {salary}
+              {salary} LPA
             </Badge>
           )}
         </div>
@@ -70,7 +72,7 @@ const Job = ({ jobData = {} }) => {
         {/* Buttons */}
         <div className="mt-4 flex gap-3">
           <Button
-            onClick={() => navigate(`/descripation/${jobId}`)}
+            onClick={() => navigate(`/description/${jobId}`)}
             variant="outline"
             className="w-1/2 border-gray-300"
           >

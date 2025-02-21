@@ -64,3 +64,20 @@ export const getAdminJobs = async (req, res) => {
     return res.status(500).json({ message: 'Server error', success: false });
   }
 };
+// Get job by ID
+export const getJobById = async (req, res) => {
+  try {
+    const jobId = req.params.id;  // Use req.params.id to get the job ID from URL
+
+    const job = await Job.findById(jobId).populate('company');  // Use findById for fetching the job
+
+    if (!job) {
+      return res.status(404).json({ message: 'Job not found', success: false });
+    }
+
+    return res.status(200).json({ message: 'Job fetched successfully', success: true, data: job });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Server error', success: false });
+  }
+};
