@@ -76,36 +76,36 @@ function Signup() {
         <div className="mb-4">
           <Label className="block mb-1">Full Name</Label>
           <input type="text" name="fullname" value={input.fullname} onChange={changeEventHandler} placeholder="Deepak Kumar"
-            className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+            className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" required />
         </div>
 
         <div className="mb-4">
           <Label className="block mb-1">Email</Label>
           <input type="email" name="email" value={input.email} onChange={changeEventHandler} placeholder="example@gmail.com"
-            className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+            className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" required />
         </div>
 
         <div className="mb-4">
           <Label className="block mb-1">Phone Number</Label>
           <input type="tel" name="phoneNumber" value={input.phoneNumber} onChange={changeEventHandler} placeholder="9876543210"
-            className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+            className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" required />
         </div>
 
         <div className="mb-4">
           <Label className="block mb-1">Password</Label>
           <input type="password" name="password" value={input.password} onChange={changeEventHandler} placeholder="********"
-            className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+            className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" required />
         </div>
 
         <div className="mb-5">
           <Label className="block mb-2 font-medium">Select Role</Label>
           <div className="space-y-2">
             <div className="flex items-center space-x-2">
-              <input type="radio" name="role" value="student" checked={input.role === "student"} onChange={changeEventHandler} className="cursor-pointer" />
+              <input type="radio" name="role" value="student" checked={input.role === "student"} onChange={changeEventHandler} className="cursor-pointer" required />
               <Label>Student</Label>
             </div>
             <div className="flex items-center space-x-2">
-              <input type="radio" name="role" value="recruiter" checked={input.role === "recruiter"} onChange={changeEventHandler} className="cursor-pointer" />
+              <input type="radio" name="role" value="recruiter" checked={input.role === "recruiter"} onChange={changeEventHandler} className="cursor-pointer" required />
               <Label>Recruiter</Label>
             </div>
           </div>
@@ -115,13 +115,6 @@ function Signup() {
           <Label className="block mb-1">Profile Picture</Label>
           <input accept="image/*" type="file" onChange={changeFileHandler} className="cursor-pointer" />
         </div>
-
-        {loading && (
-          <button disabled className="w-full flex items-center justify-center p-2 bg-gray-300 rounded-lg">
-            <span className='mr-2 h-4 w-4 animate-spin'>⏳</span>
-            Please Wait
-          </button>
-        )}
 
         <Button type="submit" className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg" disabled={loading}>
           {loading ? "Signing up..." : "Sign Up"}

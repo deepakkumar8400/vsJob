@@ -42,7 +42,6 @@ const Navbar = () => {
         <ul className="flex items-center gap-12 font-medium">
           <li><Link to="/">Home</Link></li>
           <li><Link to="/jobs">Jobs</Link></li>
-          <li><Link to="/browse">Browse</Link></li>
           {user && <li><Link to="/dashboard">Dashboard</Link></li>}
         </ul>
 
@@ -62,7 +61,11 @@ const Navbar = () => {
               <PopoverTrigger asChild>
                 <Avatar className="cursor-pointer">
                   <AvatarImage
-                    src={user.avatar || "https://github.com/shadcn.png"}
+                    src={
+                      user.profilePhoto && user.profilePhoto !== "default_profile.jpg"
+                        ? user.profilePhoto // Use the Cloudinary URL directly
+                        : "https://github.com/shadcn.png" // Fallback avatar
+                    }
                     alt="User Avatar"
                   />
                 </Avatar>
@@ -71,12 +74,16 @@ const Navbar = () => {
                 <div className="flex gap-4 items-center">
                   <Avatar>
                     <AvatarImage
-                      src={user.avatar || "https://github.com/shadcn.png"}
+                      src={
+                        user.profilePhoto && user.profilePhoto !== "default_profile.jpg"
+                          ? user.profilePhoto // Use the Cloudinary URL directly
+                          : "https://github.com/shadcn.png" // Fallback avatar
+                      }
                       alt="User Avatar"
                     />
                   </Avatar>
                   <div>
-                    <h4 className="font-medium">{user.name || "User"}</h4>
+                    <h4 className="font-medium">{user.fullname || "User"}</h4>
                     <p className="text-sm text-muted-foreground">{user.email || "user@example.com"}</p>
                   </div>
                 </div>

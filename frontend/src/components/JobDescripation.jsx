@@ -1,18 +1,34 @@
-// src/components/JobDescription.js
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { Badge } from "@/components/ui/badge"; // Import badge correctly
-import { Button } from "@/components/ui/button"; // Shadcn button use for consistency
-import { setLoading, setJob } from "../redux/jobSlice"; // Import actions
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { setLoading, setJob } from "../redux/jobSlice";
 
 const JobDescription = () => {
   const dispatch = useDispatch();
-  const { jobId } = useParams(); // Get job ID from the URL
-  const job = useSelector((state) => state.jobs.job); // Get job details from Redux store
-  const isLoading = useSelector((state) => state.jobs.isLoading); // Get loading state
-  const isApplied = false; // State for applied job (can be updated later)
+  const { jobId } = useParams();
+  const job = useSelector((state) => state.jobs.job);
+  const isLoading = useSelector((state) => state.jobs.isLoading);
+  const [isApplied, setIsApplied] = useState(false); // State to track if the user has applied
+  const [applicantCount, setApplicantCount] = useState(0); // State to track total applicants
+
+  // Fetch applicant count
+  const fetchApplicantCount = async () => {
+    try {
+      const res = await axios.get(
+        `http://localhost:9001/api/v1/application/count/${jobId}`,
+        { withCredentials: true }
+      );
+
+      if (res.data.success) {
+        setApplicantCount(res.data.count); // Update applicant count
+      }
+    } catch (error) {
+      console.error("Error fetching applicant count:", error);
+    }
+  };
 
   // Fetch single job details
   useEffect(() => {
@@ -34,12 +50,57 @@ const JobDescription = () => {
     fetchSingleJob();
   }, [dispatch, jobId]);
 
+  // Fetch applicant count when the component loads
+  useEffect(() => {
+    fetchApplicantCount();
+  }, [jobId]);
+
+  // Check if the user has already applied for the job
+  useEffect(() => {
+    const checkIfApplied = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:9001/api/v1/application/check/${jobId}`,
+          { withCredentials: true }
+        );
+
+        if (res.data.success) {
+          setIsApplied(res.data.isApplied); // Update isApplied state
+        }
+      } catch (error) {
+        console.error("Error checking application status:", error);
+      }
+    };
+
+    if (jobId) {
+      checkIfApplied();
+    }
+  }, [jobId]);
+
+  // Handle Apply Now button click
+  const handleApply = async () => {
+    try {
+      const res = await axios.post(
+        `http://localhost:9001/api/v1/application/apply/${jobId}`,
+        {},
+        { withCredentials: true }
+      );
+
+      if (res.data.success) {
+        setIsApplied(true); // Update isApplied state to true
+        fetchApplicantCount(); // Fetch updated applicant count
+      }
+    } catch (error) {
+      console.error("Error applying for job:", error);
+    }
+  };
+
   if (isLoading) {
-    return <p>Loading...</p>; // Show loading state
+    return <p>Loading...</p>;
   }
 
   if (!job) {
-    return <p>Job not found</p>; // Show message if job is not found
+    return <p>Job not found</p>;
   }
 
   return (
@@ -77,7 +138,7 @@ const JobDescription = () => {
           </p>
           <p className="text-gray-700 font-semibold">
             <span className="text-gray-500">👥 Total Applicants: </span>{" "}
-            {job.application?.length || 0}
+            {applicantCount} {/* Display real-time applicant count */}
           </p>
         </div>
       </div>
@@ -87,6 +148,7 @@ const JobDescription = () => {
         variant={isApplied ? "secondary" : "default"}
         className="mt-6 w-full py-2 text-lg font-semibold"
         disabled={isApplied} // Disable button if already applied
+        onClick={!isApplied ? handleApply : undefined} // Only call handleApply if not applied
       >
         {isApplied ? "✅ Already Applied" : "🚀 Apply Now"}
       </Button>

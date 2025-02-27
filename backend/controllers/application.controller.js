@@ -153,3 +153,41 @@ export const updateStatus = async (req, res) => {
         res.status(500).json({ message: 'Internal server error', success: false });
     }
 };
+
+// src/controllers/application.controller.js
+export const checkApplicationStatus = async (req, res) => {
+    try {
+      const userId = req.id;
+      const jobId = req.params.id;
+  
+      const existingApplication = await Application.findOne({
+        job: jobId,
+        applicant: userId,
+      });
+  
+      return res.status(200).json({
+        success: true,
+        isApplied: !!existingApplication, // Return true if application exists
+      });
+    } catch (error) {
+      console.log("Error in checkApplicationStatus:", error);
+      res.status(500).json({ message: "Internal server error", success: false });
+    }
+  };
+
+  // src/controllers/application.controller.js
+export const getApplicantCount = async (req, res) => {
+    try {
+      const jobId = req.params.id;
+  
+      const count = await Application.countDocuments({ job: jobId });
+  
+      return res.status(200).json({
+        success: true,
+        count, // Return the total number of applicants
+      });
+    } catch (error) {
+      console.log("Error in getApplicantCount:", error);
+      res.status(500).json({ message: "Internal server error", success: false });
+    }
+  };
