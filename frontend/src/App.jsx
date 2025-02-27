@@ -4,17 +4,18 @@ import Login from "./components/auth/Login";
 import SignUp from "./components/auth/SignUp";
 import Navbar from "./components/shared/Navbar";
 import Footer from "./components/Footer";
-import Jobs from'./components/jobs';
+import Jobs from "./components/jobs";
 import Browse from "./components/Browse";
 import Profile from "./components/Profile";
 import JobDescripation from "./components/JobDescripation";
+import Companies from "./components/admin/Companies"; // Import the Companies component
 
 // ✅ Layout Component: Jo har page ke sath dikhega
 const Layout = () => {
   return (
     <div>
       <Navbar />
-      <Outlet />  
+      <Outlet />
       <Footer />
     </div>
   );
@@ -33,7 +34,8 @@ const appRouter = createBrowserRouter([
       { path: "/browse", element: <Browse /> },
       { path: "/profile", element: <Profile /> },
       { path: "/description/:jobId", element: <JobDescripation /> },
-      
+      // Admin routes
+      { path: "/admin/companies", element: <Companies /> }, // Admin route
     ],
   },
 ]);

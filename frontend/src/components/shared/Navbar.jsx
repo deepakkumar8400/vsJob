@@ -18,9 +18,9 @@ const Navbar = () => {
     try {
       const res = await axios.get(`${USER_API_END}/logout`, { withCredentials: true });
       if (res.data.success) {
-        dispatch(setUser(null));
-        navigate("/");
-        toast.success(res.data.message);
+        dispatch(setUser(null)); // Clear user from Redux store
+        navigate("/"); // Redirect to home page
+        toast.success(res.data.message); // Show success message
       }
     } catch (error) {
       console.error("Logout Error:", error);
@@ -40,9 +40,28 @@ const Navbar = () => {
 
         {/* Navigation Links */}
         <ul className="flex items-center gap-12 font-medium">
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/jobs">Jobs</Link></li>
-          {user && <li><Link to="/dashboard">Dashboard</Link></li>}
+          {user?.role === "recruiter" ? (
+            <>
+              <li>
+                <Link to="/admin/companies">Companies</Link>
+              </li>
+              <li>
+                <Link to="/admin/jobs">Jobs</Link>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <Link to="/">Home</Link>
+              </li>
+              <li>
+                <Link to="/jobs">Jobs</Link>
+              </li>
+              <li>
+                <Link to="/browse">Browse</Link>
+              </li>
+            </>
+          )}
         </ul>
 
         {/* Authentication UI */}
@@ -88,10 +107,14 @@ const Navbar = () => {
                   </div>
                 </div>
                 <div className="mt-4 flex justify-between">
-                  <Button variant="link">
-                    <Link to="/profile">View Profile</Link>
+                  {user && user.role === "student" && (
+                    <Button variant="link">
+                      <Link to="/profile">View Profile</Link>
+                    </Button>
+                  )}
+                  <Button variant="link" onClick={logoutHandler}>
+                    Logout
                   </Button>
-                  <Button variant="link" onClick={logoutHandler}>Logout</Button>
                 </div>
               </PopoverContent>
             </Popover>
