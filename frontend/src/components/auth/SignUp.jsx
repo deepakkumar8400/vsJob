@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import axios from "axios";
-import USER_API_END_POINT from "/src/utils/constant.js";
+import {USER_API_END_POINT} from "/src/utils/constant.js";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoading } from "../../redux/authSlice";
 
@@ -38,6 +38,26 @@ function Signup() {
       return;
     }
 
+    if (!input.email.includes("@")) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+
+    if (!/^\d{10}$/.test(input.phoneNumber)) {
+      toast.error("Phone number must be 10 digits.");
+      return;
+    }
+
+    if (input.password.length < 6) {
+      toast.error("Password must be at least 6 characters long.");
+      return;
+    }
+
+    if (input.file && input.file.size > 5 * 1024 * 1024) {
+      toast.error("File size must be less than 5MB.");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("fullname", input.fullname);
     formData.append("email", input.email);
@@ -62,6 +82,7 @@ function Signup() {
         toast.error(res.data.message);
       }
     } catch (error) {
+      console.error("Signup Error:", error.response?.data || error);
       toast.error(error.response?.data?.message || "Signup failed! Please try again.");
     } finally {
       dispatch(setLoading(false));
@@ -75,49 +96,92 @@ function Signup() {
 
         <div className="mb-4">
           <Label className="block mb-1">Full Name</Label>
-          <input type="text" name="fullname" value={input.fullname} onChange={changeEventHandler} placeholder="Deepak Kumar"
-            className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" required />
+          <input
+            type="text"
+            name="fullname"
+            value={input.fullname}
+            onChange={changeEventHandler}
+            placeholder="Deepak Kumar"
+            className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+            required
+          />
         </div>
 
         <div className="mb-4">
           <Label className="block mb-1">Email</Label>
-          <input type="email" name="email" value={input.email} onChange={changeEventHandler} placeholder="example@gmail.com"
-            className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" required />
+          <input
+            type="email"
+            name="email"
+            value={input.email}
+            onChange={changeEventHandler}
+            placeholder="example@gmail.com"
+            className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+            required
+          />
         </div>
 
         <div className="mb-4">
           <Label className="block mb-1">Phone Number</Label>
-          <input type="tel" name="phoneNumber" value={input.phoneNumber} onChange={changeEventHandler} placeholder="9876543210"
-            className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" required />
+          <input
+            type="tel"
+            name="phoneNumber"
+            value={input.phoneNumber}
+            onChange={changeEventHandler}
+            placeholder="9876543210"
+            className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+            required
+          />
         </div>
 
         <div className="mb-4">
           <Label className="block mb-1">Password</Label>
-          <input type="password" name="password" value={input.password} onChange={changeEventHandler} placeholder="********"
-            className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" required />
+          <input
+            type="password"
+            name="password"
+            value={input.password}
+            onChange={changeEventHandler}
+            placeholder="********"
+            className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+            required
+          />
         </div>
 
         <div className="mb-5">
           <Label className="block mb-2 font-medium">Select Role</Label>
-          <div className="space-y-2">
-            <div className="flex items-center space-x-2">
-              <input type="radio" name="role" value="student" checked={input.role === "student"} onChange={changeEventHandler} className="cursor-pointer" required />
-              <Label>Student</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <input type="radio" name="role" value="recruiter" checked={input.role === "recruiter"} onChange={changeEventHandler} className="cursor-pointer" required />
-              <Label>Recruiter</Label>
-            </div>
-          </div>
+          <select
+            name="role"
+            value={input.role}
+            onChange={changeEventHandler}
+            className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="student">Student</option>
+            <option value="recruiter">Recruiter</option>
+          </select>
         </div>
 
         <div className="mb-5">
           <Label className="block mb-1">Profile Picture</Label>
-          <input accept="image/*" type="file" onChange={changeFileHandler} className="cursor-pointer" />
+          <input
+            accept="image/*"
+            type="file"
+            onChange={changeFileHandler}
+            className="cursor-pointer"
+          />
         </div>
 
-        <Button type="submit" className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg" disabled={loading}>
-          {loading ? "Signing up..." : "Sign Up"}
+        <Button
+          type="submit"
+          className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg"
+          disabled={loading}
+        >
+          {loading ? (
+            <span className="flex items-center justify-center">
+              <span className="mr-2 h-4 w-4 animate-spin">⏳</span>
+              Signing up...
+            </span>
+          ) : (
+            "Sign Up"
+          )}
         </Button>
 
         <div className="mt-3 text-center">

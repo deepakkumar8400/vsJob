@@ -1,21 +1,12 @@
-// src/redux/store.js
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from "redux-persist";
+import storage from "redux-persist/lib/storage"; // Defaults to localStorage for web
+
 import authReducer from "./authSlice";
 import jobReducer from "./jobSlice";
-import {
-  persistStore,
-  persistReducer,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
-} from "redux-persist";
-import storage from "redux-persist/lib/storage"; // Defaults to localStorage for web
-import { combineReducers } from "redux";
+import companySlice from "./companySlice";
 
-// Configuration for Redux Persist
+// Persist configuration
 const persistConfig = {
   key: "root", // Key for the persisted state
   version: 1, // Version of the persisted state
@@ -26,6 +17,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   auth: authReducer,
   jobs: jobReducer,
+  company: companySlice,
 });
 
 // Create a persisted reducer

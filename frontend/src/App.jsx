@@ -8,9 +8,10 @@ import Jobs from "./components/jobs";
 import Browse from "./components/Browse";
 import Profile from "./components/Profile";
 import JobDescripation from "./components/JobDescripation";
-import Companies from "./components/admin/Companies"; // Import the Companies component
+import Companies from "./components/admin/Companies"; 
+import CompaniesCreate from "./components/admin/CompanyCreate"; 
+import CompanySetup from './components/admin/CompanySetup'
 
-// ✅ Layout Component: Jo har page ke sath dikhega
 const Layout = () => {
   return (
     <div>
@@ -21,7 +22,6 @@ const Layout = () => {
   );
 };
 
-// ✅ Browser Router Config
 const appRouter = createBrowserRouter([
   {
     path: "/",
@@ -34,8 +34,10 @@ const appRouter = createBrowserRouter([
       { path: "/browse", element: <Browse /> },
       { path: "/profile", element: <Profile /> },
       { path: "/description/:jobId", element: <JobDescripation /> },
-      // Admin routes
-      { path: "/admin/companies", element: <Companies /> }, // Admin route
+
+      { path: "/admin/companies", element: <Companies /> }, 
+      { path: "/admin/companies/create", element: <CompaniesCreate /> }, 
+      { path:"/admin/companies/:id", element: <CompanySetup /> }, 
     ],
   },
 ]);

@@ -19,7 +19,6 @@ function Home() {
 
   return (
     <>
-      <Navbar />
       <HeroSection />
       <CategoryCarousel />
       <LatestJob />
